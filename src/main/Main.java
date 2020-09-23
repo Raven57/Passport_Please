@@ -1,13 +1,9 @@
 package main;
 
-import utils.Scan;
+import utils.Util;
 
 public class Main {
-	private void cls() {
-		for (int i = 0; i < 100; i++) {
-			System.out.println();
-		}
-	}
+
 	private void printMainMenu() {
 		System.out.println("Passport_Please");
 		System.out.println("1. Traveler");
@@ -20,35 +16,35 @@ public class Main {
 		if(validateLogin("us", "pwd")) {
 		int choice  = 0;
 		do {
-			cls();
+			Util.cls();
 			printTravelerMenu();
 			try {
-				choice = Scan.sc.nextInt();
+				choice = Util.sc.nextInt();
 			} catch (Exception e) {
 				choice = 0;
 			} 
 			if(choice<1||choice>3) {
 				System.out.println("Please enter correct number!");
-				Scan.sc.nextLine();
+				Util.sc.nextLine();
 			}
-			Scan.sc.nextLine();
+			Util.sc.nextLine();
 		} while (choice<1||choice>3);
 		
 		switch (choice) {
 		case 1:
-			cls();
+			Util.cls();
 			System.out.println("Menu satu");
-			Scan.sc.nextLine();
+			Util.sc.nextLine();
 			break;
 		case 2:
-			cls();
+			Util.cls();
 			System.out.println("Menu 2");
-			Scan.sc.nextLine();
+			Util.sc.nextLine();
 			break;
 		case 3:
-			cls();
+			Util.cls();
 			System.out.println("Menu 3");
-			Scan.sc.nextLine();
+			Util.sc.nextLine();
 			break;
 		}
 		}else {
@@ -77,36 +73,35 @@ public class Main {
 		int choice = 0;
 		do {
 			do {
-				cls();
+				Util.cls();
 				printMainMenu();
 				try {
-					choice = Scan.sc.nextInt();
+					choice = Util.sc.nextInt();
 				} catch (Exception e) {
 					choice = 0;
-//					Scan.sc.nextLine();
 				} 
 				if(choice<1||choice>3) {
 					System.out.println("Please enter correct number!");
-					Scan.sc.nextLine();
+					Util.sc.nextLine();
 				}
-				Scan.sc.nextLine();
+				Util.sc.nextLine();
 			} while (choice<1||choice>3);
 			
 			switch (choice) {
 			case 1:
-				cls();
+				Util.cls();
 				System.out.println("Menu satu");
-				Scan.sc.nextLine();
+				Util.sc.nextLine();
 				break;
 			case 2:
-				cls();
+				Util.cls();
 				System.out.println("Menu 2");
-				Scan.sc.nextLine();
+				Util.sc.nextLine();
 				break;
 			case 3:
-				cls();
+				Util.cls();
 				System.out.println("Menu 3");
-				Scan.sc.nextLine();
+				Util.sc.nextLine();
 				break;
 			}
 		} while (choice!=3);

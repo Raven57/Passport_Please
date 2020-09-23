@@ -2,8 +2,13 @@ package utils;
 
 import java.util.Scanner;
 
-public class Scan {
+public class Util {
 	public static Scanner sc = new Scanner(System.in);
+	public static void cls() {
+		for (int i = 0; i < 100; i++) {
+			System.out.println();
+		}
+	}
 	public int scanInt(int min, int max) {
 		int i = 0;
 		do {
