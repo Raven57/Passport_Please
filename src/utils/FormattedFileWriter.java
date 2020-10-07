@@ -21,7 +21,8 @@ public class FormattedFileWriter {
 			String result = "";
 			
 			for (String string : data) {
-				result+= string + "\n";
+				if(string!=null)
+					result+= string + "\n";
 			}
 			
 			return result;

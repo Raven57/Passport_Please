@@ -25,7 +25,15 @@ public class Biodata {
 		this.country = country;
 		this.placeOfBirth = placeOfBirth;
 	}
-
+	public Biodata(String []str) {
+		this.name = str[4];
+		this.gender = str[5].charAt(0);
+		this.age = Integer.parseInt(str[6]);
+		this.dob = Util.getDateFromString(str[7]);
+		this.city = str[8];
+		this.country = str[9];
+		this.placeOfBirth = str[10];
+	}
 	public void describe() {
 		System.out.println("BIODATA\n======");
 		System.out.println("Name : "+name);

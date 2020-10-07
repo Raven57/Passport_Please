@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import utils.Util;
 
 public abstract class Data {
-	private ArrayList<String> list;
+	protected ArrayList<String> list;
 	public Data(ArrayList<String> list) {
 		this.list = list;
 	}

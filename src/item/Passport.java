@@ -9,6 +9,11 @@ public class Passport extends Biodata{
 		super(name, gender, age, dob, city, country, placeOfBirth);
 		this.expiredDate=expired;
 	}
+	
+	public Passport(String []str) {
+		super(str);
+		this.expiredDate = Util.getDateFromString(str[11]);
+	}
 
 	private Date expiredDate;
 

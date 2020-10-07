@@ -11,14 +11,20 @@ public abstract class DataFactory {
 	public DataFactory() {
 		this.list = new ArrayList<>();
 	}
+	private boolean checkExistInList(String str) {
+		for (String string : list) {
+			if(string.equalsIgnoreCase(str)) return true;
+		}
+		return false;
+	}
 	public Data loadData(String filename, String separator, int idx) throws FileNotFoundException {
 		FormattedFileReader reader = new FormattedFileReader(filename, separator);
-//		while() {
 		do {
-//			if(reader.getNextData()[idx].equals(null)||reader.getNextData()[idx].equals("")) break;
-			this.list.add(reader.getNextData()[idx]);
+			String str = reader.getNextData()[idx];
+			if(!checkExistInList(str)) {				
+				this.list.add(str);
+			}
 		} while (reader.hasNextData());
-//		}
 		return this.getData();
 	}
 	protected void addData(String str) {

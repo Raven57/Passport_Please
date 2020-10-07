@@ -1,9 +1,9 @@
 package department;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
+import data.Country;
 import item.Biodata;
 import item.Passport;
 import item.Person;
@@ -20,71 +20,120 @@ public class Queue {
 		this.peakHour = false;
 		this.percentage = percentage;
 	}
-	public void comparePerson(Person p1, Person p2) {
+	public void addRandomPerson(boolean correct,int wrongInfo) {
 		
-	}
-	public void addRandomPerson(boolean correct,int percentage) {
-		
-		Date dob, expired;
+		Date dob = null, bioDob = null,expired = null;
 		Date curr = new Date();
 		Passport p;
 		Biodata b;
-		String name,city,country,placeOfBirth,bioName,bioCity,bioCountry,email = null,password;
-		char gender,fakeGender='X';
+		String name,city = null,country = null,placeOfBirth = null,bioName = null,bioCity = null,bioCountry = null,bioPlaceOfBirth = null,email = null,password;
+		char gender,bioGender='X';
 		name = Main.name.getRandom();
-		city = Main.city.getRandom();
-		country = Main.country.getRandom();
-		placeOfBirth = Main.city.getRandom();
 		email = createEmail(name);
 		password = createPassword(name);
-		int patience = Util.randomInt(1, 10);
+		int patience = Util.randomInt(10, 20);
+//		patience = 5;
+		int age = 0,bioAge = 0;
 		int rand = Util.randomInt(1, 100);
-		int age;
 		if(rand%2==0) {
 			gender ='F';
 		} else {
 			gender ='M';
 		}
 		
-		if(correct) {
-			do {
-				expired = Util.getRandomDate();
-			} while (curr.compareTo(expired)>=0);
-			do {
-				dob = Util.getRandomDate();
-			} while (curr.compareTo(dob)<=0);
-			
+		do {
+			expired = Util.getRandomDate(2030);
+		} while (curr.compareTo(expired)>=0);
+		do {
+			dob = Util.getRandomDate(2020);
+		} while (curr.compareTo(dob)<=0);
+		
+		do {
+			country = Main.country.getRandom();
+		} while (!((Country)Main.country).validCountry(country));
+		
+		do {
+			city = Main.city.getRandom();
+		} while (!((Country)Main.country).validCityMatch(city, country));
+		
+		String bornCountry;
+		do {
+			bornCountry=Main.country.getRandom();
+		} while (!((Country)Main.country).validCountry(bornCountry));
+		do {				
+			placeOfBirth = Main.city.getRandom();
+		} while (!((Country)Main.country).validCityMatch(placeOfBirth, bornCountry));
+		
+			age = Util.getYearDiff(dob, curr);
 			bioName=name;
 			bioCity=city;
 			bioCountry = country;
-			age = Util.getYearDiff(dob, new Date());
+			bioAge=age;
+			bioGender=gender;
+			bioDob=dob;
+			bioPlaceOfBirth=placeOfBirth;
 			
-		}else {
-			age = Util.randomInt(0, 100);
-			expired = Util.getRandomDate();
-			dob = Util.getRandomDate();
-			bioName=Main.name.getRandom();
-			bioCity= Main.city.getRandom();
-			bioCountry = Main.country.getRandom();
-			if(gender=='F') {
-				fakeGender='M';
-			} else {
-				fakeGender='F';
-			}
-			
-		}
-		if(correct) {
-			p = new Passport(name, gender, age, dob, city, country, placeOfBirth, expired);
-			b = new Biodata(name, gender, age, dob, city, country, placeOfBirth);
-			
-		}else {
-			p = new Passport(name, gender, age, dob, city, country, placeOfBirth, expired);
-			b = new Biodata(bioName, fakeGender, age, dob,bioCity, bioCountry, placeOfBirth);
-			
-		}
-		
+			switch (wrongInfo) {
+			case 12:
+				do {
+					country = Main.country.getRandom();
+				}while(((Country)Main.country).validCountry(country));
+			case 11:
+				do {
+					city = Main.city.getRandom();
+				}while(((Country)Main.country).validCityMatch(city, country));
+			case 10:
+				do {
+					dob = Util.getRandomDate(2020);
+				} while (curr.compareTo(dob)<=0);
+			case 9:
+				do {
+					age = Util.randomInt(1, 100);
+				} while (age==Util.getYearDiff(dob, curr));
+			case 8:
+				do {
+					bioPlaceOfBirth=Main.city.getRandom();
+				} while (bioPlaceOfBirth==placeOfBirth);
+			case 7:
+				do {
+					bioName = Main.name.getRandom();
+				} while (bioName==name);
 
-		Person pers = new Person(p, b, email, password, patience);
+			case 6:
+				do {
+					bioDob = Util.getRandomDate(2020);
+				} while (bioDob==dob);
+			case 5:
+				if(gender=='F') {
+					bioGender='M';
+				}else
+					bioGender='F';
+			case 4:
+				do {
+					expired = Util.getRandomDate(2030);
+				} while (curr.compareTo(expired)<=0);
+			case 3:
+				do {
+					bioAge = Util.randomInt(1, 100);
+				} while (bioAge==age);
+			case 2:
+				do {
+					bioCity = Main.city.getRandom();
+				}while(bioCity==city);
+			case 1:
+				do {
+					bioCountry = Main.country.getRandom();
+				}while(bioCountry==country);
+			default:
+				break;
+			}
+			if(!correct) {
+				patience/=2;
+			}
+		p = new Passport(name, gender, age, dob, city, country, placeOfBirth, expired);
+		b = new Biodata(bioName, bioGender, bioAge, bioDob,bioCity, bioCountry, bioPlaceOfBirth);
+			
+		Person pers = new Person(p, b, email, password, patience,correct);
 		personList.add(pers);
 	}
 	public String createEmail(String name) {
@@ -117,4 +166,23 @@ public class Queue {
 			person.describe();
 		}
 	}
+	public ArrayList<Person> getPersonList() {
+		return personList;
+	}
+	public void setPersonList(ArrayList<Person> personList) {
+		this.personList = personList;
+	}
+	public boolean isPeakHour() {
+		return peakHour;
+	}
+	public void setPeakHour(boolean peakHour) {
+		this.peakHour = peakHour;
+	}
+	public double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(double percentage) {
+		this.percentage = percentage;
+	}
+	
 }
