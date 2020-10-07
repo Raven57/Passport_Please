@@ -1,0 +1,21 @@
+BISA TAMBAHIN ATRIBUT YG SALAH v
+
+player ga bisa masuk ke queue tapi bisa cek
+
+
+1 hari = 72 detik
+1 jam 3 detik
+1 detik = 20 menit
+tiap hari uang player berkurang 20
+
+patience 10-20
+intvl 2 detik
+
+jumlah hari pertama 20
+diff 1-2
+next day 130% up
+coin 150% up
+difficulty +1
+
+selesai sblm hari kelar uang +number of people*10
+else uang-numberofPeople*15

@@ -1,0 +1,18 @@
+Sort highscore
+buat story per hari (thread)
+
+Sebenernya bisa dibikin lebih susah lagi gamenya, jadi ada kota yg valid dan engga v
+
+Aku kepikirannya poly nya sederhana doang sih, jadi tiap visitor bakal ada kayak kalimatnya gitu, kalimatnya disesuaikan sm negara asal dia 
+
+Mksdnya jadi selain info passport, info orangnya, ada 1 kalimat juga gitu yg ditampilin tiap orangnya X
+
+tambah fitur update passport 
+
+maintain continuity?
+user auth(org biasa / petugas)
+org biasa -> update pass (check expired date by computer), create pass, masuk bandara
+
+petugas -> cek pass
+
+daftar passport

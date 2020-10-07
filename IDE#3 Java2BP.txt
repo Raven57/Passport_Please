@@ -1,0 +1,24 @@
+Ide 3
+Papers please
+OOP:
+->Classes:
+Person has a passport
+
+Passport has a country
+
+Country has many cities
+
+A country have
+Passport Attribute :
+-> Expiration date, photo(jemoticons), Issuing country, Issuing city, DOB, Gender
+
+Person Attribute :
+-> Photo(jemoticons), Gender, Age, Patience(random, in seconds)
+
+Player is an immigration officer checking several immigration counter. Player must only allow valid passport holder in his patience time to go into the country. Otherwise the player's money will be deducted. If the passport holder ran out of patience, he/she will go out from the booth.
+
+the immigration is open 24 hours, in peak hour(9.00-10.00 and 19.00-20.00) the visitor will double, each day the visitor number is growing by 130%, for the first day every hour there will be 10 visitor except peak hour
+
+The player lose if his/her money is 0
+
+Nama orang, country, city, DOB, Gender, expired bakal dirandom sesuai data yg bakal dikasih di file. v
