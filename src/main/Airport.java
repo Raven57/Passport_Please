@@ -125,6 +125,6 @@ public class Airport {
 		Util.sc.nextLine();
 		Biodata b = new Biodata(name, gender.charAt(0), age, Util.getDateFromString(dob), "Jakarta", "Indonesia", placeOfBirth);
 		Passport p = new Passport(name,gender.charAt(0),age,Util.getDateFromString(dob),"Jakarta","Indonesia",placeOfBirth,expired);
-		return new Player(p, b, email, pass, 100, Util.getDateFromString("31-12-2020"));
+		return new Player(p, b, email, pass, 100, curr,"00:00");
 	}
 }

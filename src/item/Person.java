@@ -39,7 +39,6 @@ public class Person implements Runnable{
 	public void stop() {
         running.set(false);
     }
- 
 	public boolean isCorrect() {
 		return correct;
 	}
@@ -48,6 +47,7 @@ public class Person implements Runnable{
 		this.correct = correct;
 	}
 
+	
 	public void describe() {
 		System.out.println("Email : "+email);
 		System.out.println("Pass : "+password);

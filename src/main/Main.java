@@ -23,7 +23,6 @@ public class Main {
 	public static Player currPlayer;
 	public static int H=0;
 	public static int M=0;
-	public static Gameplay g;
 	static Airport a;
 	public static Getter get;
 	public static int choice=0,min=1,max=6;
@@ -34,16 +33,12 @@ public class Main {
         Util.saveData(pd.getPlayerList(), "player_data.csv");
         System.out.println("YOU LOSE");
         System.exit(0);
-//        new Main();
     }
     private static void restart()
     {
-        g = new Gameplay();
-        g.start();
         
         get = new Getter();
         get.start();
-//        currPlayer = a.
     }
 	private void loadDataFromFile() {
 		try {
@@ -68,35 +63,7 @@ public class Main {
 	}
 	public static int day=1;
 	public static int numberOfPeople = 1;
-	public static void addTime() {
-		M+=20;
-		if(M==60) {
-			M=0;
-			H++;
-		}
-		if(H==maxHOUR) {
-			addDate(false);
-		}
-//		if(currPlayer.getMoney()<=0) {
-//			System.out.println("YOU LOSE!");
-//			endGame();
-//		}
-	}
-	protected static void addDate(boolean beforeDayEnds) {
-		H=0;
-		M=0;
-		currPlayer.setLastDate(Util.addDay(currPlayer.getLastDate(), 1));
-//		currPlayer.setMoney(currPlayer.getMoney()-20);
-		day++;
-		money*=3;
-		money/=2;
-		q=null;
-		if(beforeDayEnds) {			
-			currPlayer.setMoney(currPlayer.getMoney()+numberOfPeople*10);
-		} else {
-			currPlayer.setMoney(currPlayer.getMoney()-numberOfPeople*15);
-		}
-	}
+
 	protected static void initializeQueue() {
 		q = new Queue(1);
 		
@@ -124,7 +91,7 @@ public class Main {
 		}
 	}
 	public static void printTime() {
-		if(currPlayer!=null) {			
+		if(currPlayer!=null) {
 			String h,m;
 			if(H<10) {
 				h="0"+Integer.toString(H);
@@ -141,7 +108,6 @@ public class Main {
 			System.out.printf("Money : %d\n",currPlayer.getMoney());
 		}
 	}
-	
 	public static void printMainMenu() {
 		System.out.println();
 		System.out.println("LOBBY");
@@ -166,9 +132,6 @@ public class Main {
 			get.stop();
 			get = null;
 		}
-		if(g!=null) {
-			g.stop();
-		}
 		g2 = new Getter2();
 		if(g2.running.get()==false) {
 			g2.start();
@@ -189,10 +152,6 @@ public class Main {
 			get.stop();
 			get=null;
 		}
-		if(g!=null) {			
-			g.stop();
-			g=null;
-		}
 		if(g2!=null) {
 			g2.stop();
 			g2=null;
@@ -203,61 +162,88 @@ public class Main {
 		}
 	}
 	public static void menu4() {
-		stopAllThread();
 		int chc=0;
-		sc = new Scanner(System.in);
 		while(chc!=3) {
-			if(Main.justEnteredAMenu) {
-				System.out.println("PLEASE ENTER ANY NUMBER ONCE AND PRESS ENTER TWICE FIRST!");
-				sc.nextLine();
-			}
 			Util.cls();
-			System.out.println("1. Previous");
-			System.out.println("2. Next");
-			System.out.println("3. Back to menu");
-			try {
-				chc = sc.nextInt();
-			} catch (Exception e) {
-				chc=0;
-				sc.nextLine();
-			}
-			if(chc<1||chc>3) {
-				System.out.println("ERRR");
-			}
-			sc.nextLine();
+			do {
+				System.out.println("1. Previous");
+				System.out.println("2. Next");
+				System.out.println("3. Back to menu");
+				System.out.print(" >> ");
+				chc = Util.scanInt(1, 3);
+			} while (chc<1||chc>3);
+			
 			if(chc==1) {
 				
 			} else if (chc==2) {
 				
 			} else if(chc==3) {
-				choice=0;
-				currPlayer.start();
-				get.start();
-				g.start();
-				break;
+				
+//				break;
 			}
 		}
 	}
+	void menu5() {
+		
+	}
+void menu2() {
+		
+	}
+void menu3() {
 	
+}
 	public Main() {
 		choice = 0;
 		a = new Airport();
-		g = new Gameplay();
 		get = new Getter();
 		loadDataFromFile();
 //		currPlayer = a.getP();
-//		currPlayer = pd.getPlayerList().get(0);
-//		a.setP(currPlayer);
+		currPlayer = pd.getPlayerList().get(0);
+		a.setP(currPlayer);
 		if(currPlayer==(null))
 			welcome();
 			
-		currPlayer.start();
-		g.start();
-		get.start();
+//		currPlayer.start();
+//		get.start();
 		isPlaying.set(true);
+		
+		int mainMenuChoice = 0;
+		do {
+			do {
+				Util.cls();
+				printMainMenu();
+				mainMenuChoice = Util.scanInt(1, 6);
+			} while (mainMenuChoice<1||mainMenuChoice>6);
+			
+			switch (mainMenuChoice) {
+			case 1:
+				Main.menu1();
+				break;
+			case 2:
+				System.out.println("Menu 2");
+				Util.sc.nextLine();
+				break;
+			case 3:
+				System.out.println("Menu 3");
+				Util.sc.nextLine();
+				break;
+			case 4:
+				menu4();
+				break;
+			case 5:
+				System.out.println("Menu 5");
+				Util.sc.nextLine();
+				break;
+			case 6:
+				System.out.println("Menu 6");
+				System.exit(0);
+				break;
+			default:
+				break;
+			}
+		} while (mainMenuChoice!=6);
+		
 	}
-	
-	
 	
 	public static void main(String[] args) {
 		new Main();

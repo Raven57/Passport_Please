@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import item.PlayerTime;
 import item.Person;
 import item.Player;
 import main.Main;
@@ -149,6 +150,14 @@ public class Util {
 			System.out.println("PLEASE ENTER ANY NUMBER ONCE AND PRESS ENTER TWICE BEFORE ENTERING YOUR CHOICE!");
 		}
 	}
+	public PlayerTime getTimeFromString(String time) {
+		int hour, minute,day;
+		String []str = time.split(":");
+		hour = Integer.parseInt(str[0]);
+		minute = Integer.parseInt(str[1]);
+		day = Integer.parseInt(str[2]);
+		return new PlayerTime(hour, minute,day);
+	}
 	public static void saveData(ArrayList<Player> playerList, String filename) {
 		String [] data = playerListToStringArr(playerList);
 		try {
@@ -200,16 +209,17 @@ public class Util {
 	public static int scanInt(int min, int max) {
 		int i = 0;
 		try {
-			i = Util.sc.nextInt();
+			i = sc.nextInt();
 		} catch (Exception e) {
 			i = 0;
 		} 
 		if(i<min||i>max) {
 			System.out.println("Please enter correct number!");
-//			Util.sc.nextLine();
+			sc.nextLine();
+			sc.nextLine();
 			return 0;
 		}
-//		Util.sc.nextLine();
+		sc.nextLine();
 		return i;
 	}
 	public static void setMinMax(int min, int max) {

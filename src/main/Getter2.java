@@ -25,16 +25,16 @@ public class Getter2 implements Runnable{
 //        	checkPlaying();
         	Main.menuChoice= getChoice();
         	choice = 0;
-        	if(Main.menuChoice==6) {
-        		Main.menuOne.stop();
-        		System.out.println("exit");
-        		Main.get = new Getter();
-        		Main.get.start();
-        		choice = 0;
-        		Main.g.start();
-        		this.stop();
-        		Main.g2=null;
-        	}
+//        	if(Main.menuChoice==6) {
+//        		Main.menuOne.stop();
+//        		System.out.println("exit");
+//        		Main.get = new Getter();
+//        		Main.get.start();
+//        		choice = 0;
+//        		Main.g.start();
+//        		this.stop();
+//        		Main.g2=null;
+//        	}
          } 
 	}
 	public void start() { 	
@@ -51,8 +51,8 @@ public class Getter2 implements Runnable{
     private void checkPlaying() {
     	if(Main.isPlaying.get()==false) {
     		System.out.println("MASUK");
-    		Main.currPlayer.stop();
-    		Main.g.stop();
+//    		Main.currPlayer.stop();
+//    		Main.g.stop();
     		this.stop();
     		System.exit(0);
     	}

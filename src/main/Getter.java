@@ -40,7 +40,7 @@ public class Getter implements Runnable{
     	if(Main.isPlaying.get()==false) {
     		System.out.println("MASUK");
     		Main.currPlayer.stop();
-    		Main.g.stop();
+//    		Main.g.stop();
     		this.stop();
     		System.exit(0);
     	}

@@ -28,7 +28,7 @@ public class PlayerDataFactory {
 			String[] str = reader.getNextData();
 			Passport p = new Passport(str);
 			Biodata b = new Biodata(str);
-			Player player = new Player(p, b, str[0], str[1], Integer.parseInt(str[2]), Util.getDateFromString(str[3]));
+			Player player = new Player(p, b, str[0], str[1], Integer.parseInt(str[2]), Util.getDateFromString(str[3]),str[12]);
 			this.list.add(player);
 		} while (reader.hasNextData());
 		return this.getPlayerData();

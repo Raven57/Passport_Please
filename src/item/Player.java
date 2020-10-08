@@ -7,14 +7,23 @@ import utils.Util;
 
 public class Player extends Person{
 	private int money;
-	private Date lastDate;
 	private boolean isPlaying = false;
-	public Player(Passport passport, Biodata biodata, String email, String password, int money, Date lastDate) {
+	private PlayerTime;
+	public Player(Passport passport, Biodata biodata, String email, String password, int money, Date lastDate,String lastTime) {
 		super(passport, biodata, email, password, 0, true);
 		this.money = money;
 		this.lastDate = lastDate;
+		this.lastTime=lastTime;
 	}
 	
+	public String getLastTime() {
+		return lastTime;
+	}
+
+	public void setLastTime(String lastTime) {
+		this.lastTime = lastTime;
+	}
+
 	public int getMoney() {
 		return money;
 	}
