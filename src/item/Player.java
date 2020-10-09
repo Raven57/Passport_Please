@@ -1,27 +1,61 @@
 package item;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import item.charm.Charm;
 import main.Main;
 import utils.Util;
 
 public class Player extends Person{
 	private int money;
 	private boolean isPlaying = false;
-	private PlayerTime;
-	public Player(Passport passport, Biodata biodata, String email, String password, int money, Date lastDate,String lastTime) {
+	private PlayerTime pt;
+	private ArrayList<Charm> charmList;
+//	private Charm activeCharm;
+	public ArrayList<Charm> getCharmList() {
+		return charmList;
+	}
+	public void addCharm(Charm c) {
+		if(charmList==null) {
+			charmList = new ArrayList<>();
+		}
+		this.charmList.add(c);
+	}
+	public void printCharm() {
+		if(charmList!=null) {			
+			for (Charm charm : charmList) {
+				for (Charm c : Main.s.getCharmList()) {
+					if(charm.getName().equals(c.getName())) {
+						charm.setAvailableFrom(c.getAvailableFrom());
+						charm.setDescription(c.getDescription());
+						charm.setPrice(c.getPrice());
+					}
+				}
+				charm.describe();
+			}
+		} else {
+			System.out.println("Your inventory is empty!");
+		}
+	}
+	public void setCharmList(ArrayList<Charm> charmList) {
+		this.charmList = charmList;
+	}
+//	public Charm getActiveCharm() {
+//		return activeCharm;
+//	}
+//	public void setActiveCharm(Charm activeCharm) {
+//		this.activeCharm = activeCharm;
+//	}
+	//kasi dia inventory
+	public Player(Passport passport, Biodata biodata, String email, String password, int money, PlayerTime pt) {
 		super(passport, biodata, email, password, 0, true);
 		this.money = money;
-		this.lastDate = lastDate;
-		this.lastTime=lastTime;
+		this.pt = pt;
 	}
-	
-	public String getLastTime() {
-		return lastTime;
-	}
-
-	public void setLastTime(String lastTime) {
-		this.lastTime = lastTime;
+	public void printInformation() {
+		pt.printTimeAndDate();
+		System.out.println("Money : "+money);
 	}
 
 	public int getMoney() {
@@ -31,15 +65,6 @@ public class Player extends Person{
 	public void setMoney(int money) {
 		this.money = money;
 	}
-
-	public Date getLastDate() {
-		return lastDate;
-	}
-
-	public void setLastDate(Date lastDate) {
-		this.lastDate = lastDate;
-	}
-
 	public boolean isPlaying() {
 		return isPlaying;
 	}
@@ -49,18 +74,17 @@ public class Player extends Person{
 	}
 
 	public void describe() {
-		System.out.println("Email : "+email);
-		System.out.println("Pass : "+password);
-		System.out.println("patience : "+patience);
-		System.out.println("money : "+money);
-		System.out.println("lastDate: "+Util.formatDate.format(lastDate));
-
-		biodata.describe();
-		passport.describe();
+			
+		System.out.printf("\n| %-20s ",email);
+		System.out.printf("| %-20s ",this.biodata.name);
+		System.out.printf("| %-20d ",money);
+		System.out.printf("| %-20d ",pt.getDay());
+		System.out.printf("| %-20s ",this.biodata.city);
+		System.out.printf("| %-20s |",this.biodata.country);
 	}
 	public void checkMoney() {
 		if(money<=0) {
-			Main.stopAllThread();
+//			Main.stopAllThread();
 			Main.endGame();
 		}
 	}
@@ -81,13 +105,16 @@ public class Player extends Person{
                 System.out.println(
                   "Thread was interrupted, Failed to complete operation");
             }
-//            System.out.println(++count);
-//            if(count>=10) stop();
-//            System.out.println("asd");
-//            syso
-            Main.addTime();
-//            checkMoney();
-            
          } 
+	}
+
+
+	public PlayerTime getPt() {
+		return pt;
+	}
+
+
+	public void setPt(PlayerTime pt) {
+		this.pt = pt;
 	}
 }

@@ -1,13 +1,13 @@
-package department;
+package main;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import data.City;
 import data.Country;
 import item.Biodata;
 import item.Passport;
 import item.Person;
-import main.Main;
 import utils.Util;
 
 public class Queue {
@@ -23,7 +23,7 @@ public class Queue {
 	public void addRandomPerson(boolean correct,int wrongInfo) {
 		
 		Date dob = null, bioDob = null,expired = null;
-		Date curr = new Date();
+		Date curr = Main.currPlayer.getPt().getLastDate();
 		Passport p;
 		Biodata b;
 		String name,city = null,country = null,placeOfBirth = null,bioName = null,bioCity = null,bioCountry = null,bioPlaceOfBirth = null,email = null,password;
@@ -55,14 +55,9 @@ public class Queue {
 		do {
 			city = Main.city.getRandom();
 		} while (!((Country)Main.country).validCityMatch(city, country));
-		
-		String bornCountry;
-		do {
-			bornCountry=Main.country.getRandom();
-		} while (!((Country)Main.country).validCountry(bornCountry));
 		do {				
 			placeOfBirth = Main.city.getRandom();
-		} while (!((Country)Main.country).validCityMatch(placeOfBirth, bornCountry));
+		} while (!((City)Main.city).validCity(placeOfBirth));
 		
 			age = Util.getYearDiff(dob, curr);
 			bioName=name;
@@ -149,7 +144,8 @@ public class Queue {
 	}
 	private boolean emailAvailable(String email) {
 		for (Person person : personList) {
-			if(person.getEmail().equals(email))
+			if (person==null) return false;
+			else if(person.getEmail().equals(email))
 				return false;
 		}
 		return true;

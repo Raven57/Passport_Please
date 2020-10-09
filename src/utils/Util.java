@@ -12,8 +12,11 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import item.PlayerTime;
+import item.charm.Charm;
+import item.Biodata;
 import item.Person;
 import item.Player;
+import main.Airport;
 import main.Main;
 
 public class Util {
@@ -31,7 +34,7 @@ public class Util {
 			num--;
 		}
 		if(personList.size()==0) {
-			System.out.println("WAW HABIS");
+//			System.out.println("WAW HABIS");
 			return;
 		}
 		for (int i = 0; i < num; i++) {
@@ -45,6 +48,11 @@ public class Util {
 //				person.start();
 //			}
 //		}
+		if(Airport.constraint!=null) {
+			System.out.println("DO NOT ALLOW PERSON WITH THE FOLLOWING INFORMATION:");
+			Airport.constraint.describe();
+		}
+		System.out.printf("|------------------------------------------------------------------------------------------------------------------------------------|\n");
 		System.out.printf("| Correct        |");
 		for (int i = 0; i < num; i++) {
 			System.out.printf("| %-20b ",personList.get(i).isCorrect());
@@ -146,18 +154,15 @@ public class Util {
 		System.out.println("|");	
 		System.out.printf("|------------------------------------------------------------------------------------------------------------------------------------|\n");
 		System.out.print("PERSON WITH CORRECT INFORMATION \n >> ");
-		if(Main.justEnteredAMenu) {
-			System.out.println("PLEASE ENTER ANY NUMBER ONCE AND PRESS ENTER TWICE BEFORE ENTERING YOUR CHOICE!");
-		}
 	}
-	public PlayerTime getTimeFromString(String time) {
-		int hour, minute,day;
-		String []str = time.split(":");
-		hour = Integer.parseInt(str[0]);
-		minute = Integer.parseInt(str[1]);
-		day = Integer.parseInt(str[2]);
-		return new PlayerTime(hour, minute,day);
-	}
+//	public PlayerTime getTimeFromString(String time) {
+//		int hour, minute,day;
+//		String []str = time.split(":");
+//		hour = Integer.parseInt(str[0]);
+//		minute = Integer.parseInt(str[1]);
+//		day = Integer.parseInt(str[2]);
+//		return new PlayerTime(hour, minute,day);
+//	}
 	public static void saveData(ArrayList<Player> playerList, String filename) {
 		String [] data = playerListToStringArr(playerList);
 		try {
@@ -189,10 +194,20 @@ public class Util {
 		return str;
 	}
 	public static String convertPlayerToString(Player p) {
+		Biodata b = p.getBiodata();
+		PlayerTime pt = p.getPt();
+		String charmList = "";
+		if(p.getCharmList()!=null) {			
+			System.out.println("asdasdadsa");
+			for (Charm c : p.getCharmList()) {
+				System.out.println(c.getName());
+				charmList = charmList.concat(";").concat(c.getName()).concat(";").concat(Integer.toString(c.getQty()));
+			}
+		}
 		return p.getEmail()+";"+p.getPassword()+";"+p.getMoney()+";"+
-	formatDate.format(p.getLastDate())+";"+p.getBiodata().getName()+";"+p.getBiodata().getGender()+
-	";"+p.getBiodata().getAge()+";"+formatDate.format(p.getBiodata().getDob())+";"+p.getPassport().getCity()+";"+
-	p.getBiodata().getCountry()+";"+p.getBiodata().getPlaceOfBirth()+";"+formatDate.format(p.getPassport().getExpiredDate());
+	formatDate.format(pt.getLastDate())+";"+b.getName()+";"+b.getGender()+
+	";"+b.getAge()+";"+formatDate.format(b.getDob())+";"+b.getCity()+";"+
+	b.getCountry()+";"+b.getPlaceOfBirth()+";"+formatDate.format(p.getPassport().getExpiredDate())+";"+p.getPt().getStringTime()+";"+pt.getDay()+charmList;
 	}
     public static Date addYear(Date date, int i) {
         Calendar cal = Calendar.getInstance();
@@ -221,10 +236,6 @@ public class Util {
 		}
 		sc.nextLine();
 		return i;
-	}
-	public static void setMinMax(int min, int max) {
-		Main.min = min;
-		Main.max = max;
 	}
 	public static String[] splitString(String str, String separator) {
 		return str.split(separator);

@@ -36,13 +36,50 @@ public class Biodata {
 	}
 	public void describe() {
 		System.out.println("BIODATA\n======");
-		System.out.println("Name : "+name);
-		System.out.println("Gender : "+gender);
-		System.out.println("age : "+age);
-		System.out.println("dob : "+Util.formatDate.format(dob));
-		System.out.println("city : "+city);
-		System.out.println("country : "+country);
-		System.out.println("place : "+placeOfBirth);
+		if(name!=null) {			
+			System.out.printf("| %-20s ","Name");
+		}
+		if(city!=null) {		
+			System.out.printf("| %-20s ","City");
+		}
+		if(country!=null){
+			System.out.printf("| %-20s ","Country");
+		}
+		if(placeOfBirth!=null){
+			System.out.printf("| %-20s ","Place Of Birth");
+		}
+		if(gender!='X'){
+			System.out.printf("| %-20c ","Gender");
+		}
+		if(age!=0){
+			System.out.printf("| %-20d ","Age");
+		}
+		if(dob!=null){
+			System.out.printf("| %-20s ","Date of Birth");
+		}
+		System.out.println("|");
+		if(name!=null) {			
+			System.out.printf("| %-20s ",name);
+		}
+		if(city!=null) {		
+			System.out.printf("| %-20s ",city);
+		}
+		if(country!=null){
+			System.out.printf("| %-20s ",country);
+		}
+		if(placeOfBirth!=null){
+			System.out.printf("| %-20s ",placeOfBirth);
+		}
+		if(gender!='X'){
+			System.out.printf("| %-20c ",gender);
+		}
+		if(age!=0){
+			System.out.printf("| %-20d ",age);
+		}
+		if(dob!=null){
+			System.out.printf("| %-20s ",Util.formatDate.format(dob));
+		}
+		System.out.println("|");
 	}
 	public String getName() {
 		return name;

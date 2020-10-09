@@ -3,6 +3,18 @@ package data;
 import java.util.ArrayList;
 
 import item.Player;
+import item.charm.Charm;
+import item.charm.money.BookOfTolerance;
+import item.charm.money.FourLeafClover;
+import item.charm.money.NoPenalty;
+import item.charm.productivity.BePatience;
+import item.charm.productivity.Cheat;
+import item.charm.productivity.LessPatience;
+import item.charm.time.HappyHour;
+import item.charm.time.TimeStone;
+import item.charm.weird.DayDreaming;
+import item.charm.weird.FanaticFan;
+import item.charm.weird.LovePotion;
 
 public class PlayerData {
 	protected ArrayList<Player> playerList;
@@ -16,6 +28,7 @@ public class PlayerData {
 		}
 		return null;
 	}
+	
 	public void addToList(Player p) {
 		playerList.add(p);
 	}
