@@ -68,14 +68,14 @@ public class Main {
 	public static void printMainMenu() {
 		System.out.println();
 		currPlayer.describeLobby();
+		System.out.println("=====");
 		System.out.println("LOBBY");
 		System.out.println("=====");
 		System.out.println("1. Work");
 		System.out.println("2. Market");
 		System.out.println("3. View Inventory");
 		System.out.println("4. View Officer");
-//		System.out.println("5. Sell Item");
-		System.out.println("6. Exit");
+		System.out.println("5. Exit");
 		System.out.print(" >> ");
 	}
 	private void menu4() {
@@ -121,9 +121,16 @@ public class Main {
 			do {
 				Util.cls();
 				s.showCharms(currPlayer.getPt().getDay(),page);
-				System.out.println("Press 1 to go to previous page\nPress 2 to choose a charm from this page\nPress 3 to go to next page\nPress 5 to exit\n >> ");
-				choice = Util.scanInt(1, 5);
-			} while (choice<1||choice>5);
+				if((page-4)>=0) {
+					System.out.println("1. Previous page");
+				}
+				System.out.println("2. Choose a charm");
+				if(page+4<=s.getTemp().size()) {
+					System.out.println("3. Next page");
+				}
+				System.out.print("4. Exit\n >> ");
+				choice = Util.scanInt(1, 4);
+			} while (choice<1||choice>4);
 			if(choice==1) {
 				if((page-4)<0) {
 					System.out.println("This is first page");
@@ -141,11 +148,8 @@ public class Main {
 				}else {
 					page+=4;
 				}
-			} else if(choice==4) {
-				System.out.println("INPUT CORRECT COMMAND!");
-				Util.sc.nextLine();
 			}
-		} while (choice!=5);
+		} while (choice!=4);
 		if(!shop)
 			return;
 		else {
@@ -179,18 +183,21 @@ public class Main {
 		int choice = 0;
 		int page = 0;
 		boolean chosen=false;
+		boolean notEmpty = true;
 		do {
 			do {
 				Util.cls();
-				currPlayer.printCharm(page);
-				System.out.println(
-						"Press 1 to go to previous page\n"
-						+ "Press 2 to choose a charm from this page\n"
-						+ "Press 3 to go to next page\n"
-						+ "Press 5 to exit\n"
-						+ " >> ");
-				choice = Util.scanInt(1, 5);
-			} while (choice<1||choice>5);
+				currPlayer.printCharm(page);	
+					if((page-4)>=0) {
+						System.out.println("1. Previous page");
+					}
+					System.out.println("2. Choose a charm");
+					if(page+4<currPlayer.getCharmList().size()) {
+						System.out.println("3. Next page");
+					}
+					System.out.print("4. Exit\n >> ");				
+					choice = Util.scanInt(1, 4);
+			} while (choice<1||choice>4);
 			if(choice==1) {
 				if((page-4)<0) {
 					System.out.println("This is first page");
@@ -202,17 +209,14 @@ public class Main {
 				chosen=true;
 				break;
 			} else if(choice ==3) {
-				if(page+4>currPlayer.getTemp().size()) {
+				if(page+4>=currPlayer.getCharmList().size()) {
 					System.out.println("This is last page");
 					Util.sc.nextLine();
 				}else {
 					page+=4;
 				}
-			} else if(choice==4) {
-				System.out.println("INPUT CORRECT COMMAND!");
-				Util.sc.nextLine();
 			}
-		} while (choice!=5);
+		} while (choice!=4);
 		if(!chosen)
 			return;
 		else {
@@ -235,11 +239,10 @@ public class Main {
 				}
 				else {
 					Charm c = currPlayer.getCharm(--choice);
-					ActiveCharm ac = currPlayer.getActiveCharm();
 					
 					do {
 						c.describe();
-						System.out.print("1.Activate\n" + "2.Sell\n" + "3. Back" + "\n >> ");
+						System.out.print("1. Activate\n" + "2. Sell\n" + "3. Back" + "\n >> ");
 						choice = Util.scanInt(1, 3);
 					} while (choice < 1 || choice > 3);
 					if (choice == 1 || choice == 2) {
@@ -249,14 +252,15 @@ public class Main {
 							qty = Util.scanInt(1, c.getQty());
 						} while (qty < 1 || qty > c.getQty());
 						if (choice == 1) {
-//							ActiveCharmBuilder acb = new ActiveCharmBuilder();
-//							currPlayer.setActiveCharm(acb.buildMc(mc).buildPc(pc).buildTc(tc).buildWc(wc).Build());;
+							ActiveCharm ac = currPlayer.getActiveCharm();
 							if(c instanceof MoneyCharm) ac.setMc(c,qty);
 							else if (c instanceof WeirdCharm) ac.setWc(c,qty);
 							else if (c instanceof ProductivityCharm) ac.setPc(c,qty);
 							else if (c instanceof TimeCharm) ac.setTc(c,qty);
+							return;
 						} else {
 							currPlayer.sellCharm(c, qty);
+							return;
 						}
 					}
 				}
@@ -266,25 +270,25 @@ public class Main {
 	public Main() {
 		a = new Airport();
 		loadDataFromFile();
-//		currPlayer = a.getP();
-		currPlayer = pd.getPlayerList().get(1);
-		a.setP(currPlayer);
+		currPlayer = a.getP();
+//		currPlayer = pd.getPlayerList().get(1);
+//		a.setP(currPlayer);
 		if(currPlayer==(null))
 			welcome();
 		
 		int mainMenuChoice = 0;
-		while(mainMenuChoice!=6) {
+		while(mainMenuChoice!=5) {
 			do {
 				Util.cls();
 				printMainMenu();
-				mainMenuChoice = Util.scanInt(1, 6);
-			} while (mainMenuChoice<1||mainMenuChoice>6);
+				mainMenuChoice = Util.scanInt(1, 5);
+			} while (mainMenuChoice<1||mainMenuChoice>5);
 			
 			switch (mainMenuChoice) {
 			case 1:
 				a.play();
 				while(a.isPlaying) {					
-					a.inputChoice(Util.scanInt(1, 6));
+					a.inputChoice(Util.scanInt(1, 5));
 				}
 				Util.sc.nextLine();
 				break;
@@ -298,11 +302,6 @@ public class Main {
 				menu4();
 				break;
 			case 5:
-				System.out.println("Menu 5");
-				Util.sc.nextLine();
-				break;
-			case 6:
-				System.out.println("Menu 6");
 				Util.saveData(pd.getPlayerList(), "player_data.csv");
 				System.exit(0);
 				break;

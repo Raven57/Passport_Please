@@ -52,8 +52,16 @@ public class Player extends Person{
 	}
 	public void sellCharm(Charm c, int qty) {
 		if(c.getQty()==qty) {
-			charmList.remove(c);
+			if (charmList.remove(c)) {
+//				System.out.println("asdasdasdasdsadsadasdasdasda");
+//				Util.sc.nextLine();
+			}
 			temp.remove(c);
+//			for (Charm charm : temp) {
+//				if(c.getName().equals(charm.getName())) {					
+//					temp.remove(charm);
+//				}
+//			}
 		} else {
 			c.deductQty(qty);
 		}
@@ -61,7 +69,7 @@ public class Player extends Person{
 		System.out.println("Success sell charm!");
 		Util.sc.nextLine();
 	}
-	public void printCharm(int start) {
+	public boolean printCharm(int start) {
 		temp = new ArrayList<>();
 		if(charmList!=null) {
 			getCharmInfo();
@@ -71,16 +79,21 @@ public class Player extends Person{
 					temp.add(charmList.get(i));
 				}
 			}
-			for (int j = 0; j < 4; j++) {
-				if(j<temp.size()) {					
-					System.out.print((j+1)+". ");
-					temp.get(j).describe();	
+			if(!temp.isEmpty()) {				
+				for (int j = 0; j < 4; j++) {
+					if(j<temp.size()) {					
+						System.out.print((j+1)+". ");
+						temp.get(j).describe();	
+					}
 				}
+			} else {
+				return false;
 			}
 //			return i;
 		} else {
 			System.out.println("Your inventory is empty!");
 		}
+		return true;
 //		return 0;
 	}
 	public ArrayList<Charm> getTemp() {
@@ -91,7 +104,7 @@ public class Player extends Person{
 	}
 	public void chooseCharm() {
 		for (int i = 0; i < 4; i++) {
-			if(i<temp2.size()) {				
+			if(i<temp2.size()) {
 				System.out.print((i+1)+". ");
 				temp2.get(i).describe();
 			}
@@ -162,8 +175,12 @@ public class Player extends Person{
 		System.out.println("Money : "+money);
 		System.out.println("Day count : "+pt.getDay());
 		System.out.println("Date "+Util.formatDate.format(pt.getLastDate()));
+		printActiveCharm();
+		System.out.println();
+	}
+	public void printActiveCharm() {
 		if(activeCharm!=null) {
-			System.out.println("Active charm\n===========");
+			System.out.println("\n===========\nActive charm\n===========");
 			if(activeCharm.getMc()!=null)
 				System.out.println("Money Charm : "+((Charm)activeCharm.getMc()).getName()+" "+((Charm)activeCharm.getMc()).getQty());
 			if(activeCharm.getTc()!=null)
@@ -172,7 +189,6 @@ public class Player extends Person{
 				System.out.println("Productivity Charm : "+((Charm)activeCharm.getPc()).getName()+" "+((Charm)activeCharm.getPc()).getQty());
 			if(activeCharm.getWc()!=null)
 				System.out.println("Weird Charm : "+((Charm)activeCharm.getWc()).getName()+" "+((Charm)activeCharm.getWc()).getQty());
-			System.out.println("=====");
 		}
 	}
 	public void checkMoney() {

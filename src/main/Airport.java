@@ -44,7 +44,8 @@ public class Airport implements Runnable{
 		char gender='X';
 		int age=0;
 		Date dob=null;
-		limit%=6;
+		limit%=7;
+		if(limit==0) return null;
 		switch (limit) {
 			case 6:
 				int ran = Util.randomInt(1, 10);
@@ -58,7 +59,7 @@ public class Airport implements Runnable{
 			case 4:
 				do {
 					placeOfBirth = Main.city.getRandom();
-				} while (!((City)Main.city).validCity(city));
+				} while (!((City)Main.city).validCity(placeOfBirth));
 			case 3:
 				do {
 					country = Main.country.getRandom();
@@ -78,7 +79,6 @@ public class Airport implements Runnable{
 			default:
 				break;
 		}
-		
 		return new Biodata(name, gender, age, dob, city, country, placeOfBirth);
 	}
 	protected boolean login() {
@@ -136,7 +136,6 @@ public class Airport implements Runnable{
 				correct=false;
 			}
 			if(correct==false) {
-				System.out.println(day);
 				wrongInfo = Util.randomInt(1, 1+day);
 			}
 			q.addRandomPerson(correct, wrongInfo);
