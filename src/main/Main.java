@@ -117,39 +117,74 @@ public class Main {
 		int choice = 0;
 		int page = 0;
 		boolean shop=false;
+		int max = 0;
+		int code = 0;
 		do {
 			do {
 				Util.cls();
 				s.showCharms(currPlayer.getPt().getDay(),page);
-				if((page-4)>=0) {
-					System.out.println("1. Previous page");
+				System.out.println("----MARKET----");
+				System.out.println("==============\n   Options    \n==============");
+				if((page-4)<0&&page+4>s.getTemp().size()) {
+					System.out.println("1. Choose a charm\n"
+							+ "2. Exit");
+					max =2;
+					code=1;
 				}
-				System.out.println("2. Choose a charm");
-				if(page+4<=s.getTemp().size()) {
+				else if((page-4)>=0&&page+4>s.getTemp().size()) {
+					System.out.println("1. Choose a charm");
+					System.out.println("2. Previous page");
+					System.out.println("3. Exit");
+					max=3;
+					code =2;
+				} 
+				else if ((page-4)>=0&&page+4<s.getTemp().size()) {
+					System.out.println("1. Choose a charm");
+					System.out.println("2. Previous page");
 					System.out.println("3. Next page");
+					System.out.println("4. Exit");
+					max=4;
+					code =3;
 				}
-				System.out.print("4. Exit\n >> ");
-				choice = Util.scanInt(1, 4);
-			} while (choice<1||choice>4);
-			if(choice==1) {
-				if((page-4)<0) {
-					System.out.println("This is first page");
+				else if ((page-4)<0&&page+4<s.getTemp().size()) {
+					System.out.println("1. Choose a charm");
+					System.out.println("2. Next page");
+					System.out.println("3. Exit");
+					max=3;
+					code =4;
+				}
+				else {
+					System.out.println("WTF");
 					Util.sc.nextLine();
-				} else {
+				}
+				System.out.print(" >> ");
+				choice = Util.scanInt(1, max);
+			} while (choice<1||choice>max);
+			switch (code) {
+			case 2:
+				if(choice==2) {
 					page-=4;
 				}
-			} else if (choice==2) {
-				shop=true;
 				break;
-			} else if(choice ==3) {
-				if(page+4>s.getTemp().size()) {
-					System.out.println("This is last page");
-					Util.sc.nextLine();
-				}else {
+			case 3:
+				if(choice==2) {
+					page-=4;
+				}
+				else if(choice==3) {
 					page+=4;
 				}
+				break;
+			case 4:
+				if(choice==2) {
+					page+=4;
+				}
+				break;
 			}
-		} while (choice!=4);
+			if(choice==1) {
+				shop=true;
+				break;
+			}
+		} while (choice!=max);
 		if(!shop)
 			return;
 		else {
@@ -160,7 +195,6 @@ public class Main {
 				do {
 					Util.cls();
 					s.chooseCharm();
-//					s.showCharms(currPlayer.getPt().getDay(), page);
 					System.out.print("CHOOSE YOUR POTION! [" + (start) + "-" + (end) + "]\nPress 5 to exit\n >> ");
 					
 					choice = Util.scanInt(start, 5);
@@ -174,6 +208,7 @@ public class Main {
 				}
 				else {
 					s.getTemp2().get(--choice).buyCharm(currPlayer);
+					return;
 				} 
 			} while (choice!=5);
 		}
@@ -184,39 +219,106 @@ public class Main {
 		int page = 0;
 		boolean chosen=false;
 		boolean notEmpty = true;
+		int max=0,code=0;
+		if(currPlayer.getCharmList()==null||currPlayer.getCharmList().isEmpty()) {
+			Util.cls();
+			System.out.println("YOUR INVENTORY IS EMPTY!");
+			Util.sc.nextLine();
+			return;
+		}
 		do {
 			do {
 				Util.cls();
-				currPlayer.printCharm(page);	
-					if((page-4)>=0) {
-						System.out.println("1. Previous page");
-					}
-					System.out.println("2. Choose a charm");
-					if(page+4<currPlayer.getCharmList().size()) {
-						System.out.println("3. Next page");
-					}
-					System.out.print("4. Exit\n >> ");				
-					choice = Util.scanInt(1, 4);
-			} while (choice<1||choice>4);
-			if(choice==1) {
-				if((page-4)<0) {
-					System.out.println("This is first page");
+				currPlayer.printCharm(page);
+				System.out.println("---INVENTORY---");
+				System.out.println("==============\n    Options    \n==============");
+
+//					if((page-4)>=0) {
+//						System.out.println("1. Previous page");
+//					}
+//					System.out.println("2. Choose a charm");
+//					if(page+4<currPlayer.getCharmList().size()) {
+//						System.out.println("3. Next page");
+//					}
+//					System.out.print("4. Exit\n >> ");			
+				if((page-4)<0&&page+4>currPlayer.getCharmList().size()) {
+					System.out.println("1. Choose a charm\n"
+							+ "2. Exit");
+					max =2;
+					code=1;
+				}
+				else if((page-4)>=0&&page+4>currPlayer.getCharmList().size()) {
+					System.out.println("1. Choose a charm");
+					System.out.println("2. Previous page");
+					System.out.println("3. Exit");
+					max=3;
+					code =2;
+				} 
+				else if ((page-4)>=0&&page+4<currPlayer.getCharmList().size()) {
+					System.out.println("1. Choose a charm");
+					System.out.println("2. Previous page");
+					System.out.println("3. Next page");
+					System.out.println("4. Exit");
+					max=4;
+					code =3;
+				}
+				else if ((page-4)<0&&page+4<currPlayer.getCharmList().size()) {
+					System.out.println("1. Choose a charm");
+					System.out.println("2. Next page");
+					System.out.println("3. Exit");
+					max=3;
+					code =4;
+				}
+				else {
+					System.out.println("WTF");
 					Util.sc.nextLine();
-				} else {
+				}
+				System.out.print(" >> ");
+					choice = Util.scanInt(1, max);
+			} while (choice<1||choice>max);
+			switch (code) {
+			case 2:
+				if(choice==2) {
 					page-=4;
 				}
-			} else if (choice==2) {
-				chosen=true;
 				break;
-			} else if(choice ==3) {
-				if(page+4>=currPlayer.getCharmList().size()) {
-					System.out.println("This is last page");
-					Util.sc.nextLine();
-				}else {
+			case 3:
+				if(choice==2) {
+					page-=4;
+				}
+				else if(choice==3) {
 					page+=4;
 				}
+				break;
+			case 4:
+				if(choice==2) {
+					page+=4;
+				}
+				break;
 			}
-		} while (choice!=4);
+			if(choice==1) {
+				chosen=true;
+				break;
+			}
+//			if(choice==1) {
+//				if((page-4)<0) {
+//					System.out.println("This is first page");
+//					Util.sc.nextLine();
+//				} else {
+//					page-=4;
+//				}
+//			} else if (choice==2) {
+//				chosen=true;
+//				break;
+//			} else if(choice ==3) {
+//				if(page+4>=currPlayer.getCharmList().size()) {
+//					System.out.println("This is last page");
+//					Util.sc.nextLine();
+//				}else {
+//					page+=4;
+//				}
+//			}
+		} while (choice!=max);
 		if(!chosen)
 			return;
 		else {
@@ -241,7 +343,8 @@ public class Main {
 					Charm c = currPlayer.getCharm(--choice);
 					
 					do {
-						c.describe();
+//						c.describe();
+						System.out.println("======\nOptions\n======");
 						System.out.print("1. Activate\n" + "2. Sell\n" + "3. Back" + "\n >> ");
 						choice = Util.scanInt(1, 3);
 					} while (choice < 1 || choice > 3);
@@ -288,7 +391,7 @@ public class Main {
 			case 1:
 				a.play();
 				while(a.isPlaying) {					
-					a.inputChoice(Util.scanInt(1, 5));
+					a.inputChoice(Util.scanInt(1, 6));
 				}
 				Util.sc.nextLine();
 				break;

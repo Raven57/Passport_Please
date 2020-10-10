@@ -65,7 +65,7 @@ public class Util {
 //			}
 //		}
 		if(Airport.constraint!=null) {
-			System.out.println("DO NOT ALLOW PERSON WITH THE FOLLOWING INFORMATION:");
+			System.out.println("\nDO NOT ALLOW PERSON WITH THE FOLLOWING INFORMATION:");
 			Airport.constraint.describe();
 		}
 		System.out.printf("|------------------------------------------------------------------------------------------------------------------------------------|\n");
@@ -172,7 +172,7 @@ public class Util {
 		}
 		System.out.println("|");	
 		System.out.printf("|------------------------------------------------------------------------------------------------------------------------------------|\n");
-		System.out.print("PERSON WITH CORRECT INFORMATION \n >> ");
+		System.out.print("ONLY ALLOW PERSON WITH CORRECT INFORMATION [press 6 to exit]\n >> ");
 	}
 //	public PlayerTime getTimeFromString(String time) {
 //		int hour, minute,day;

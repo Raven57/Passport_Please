@@ -179,7 +179,7 @@ public class Player extends Person{
 		System.out.println();
 	}
 	public void printActiveCharm() {
-		if(activeCharm!=null) {
+		if(activeCharmActivated()) {
 			System.out.println("\n===========\nActive charm\n===========");
 			if(activeCharm.getMc()!=null)
 				System.out.println("Money Charm : "+((Charm)activeCharm.getMc()).getName()+" "+((Charm)activeCharm.getMc()).getQty());
@@ -191,8 +191,16 @@ public class Player extends Person{
 				System.out.println("Weird Charm : "+((Charm)activeCharm.getWc()).getName()+" "+((Charm)activeCharm.getWc()).getQty());
 		}
 	}
+	private boolean activeCharmActivated() {
+		int count = 0;
+		if(activeCharm!=null) {
+			if(activeCharm.getMc()==null&&activeCharm.getTc()==null&&activeCharm.getPc()==null&&activeCharm.getWc()==null) return false;
+			return true;
+		}
+		return false;
+	}
 	public void checkMoney() {
-		if(money<=0) {
+		if(money<0) {
 //			Main.stopAllThread();
 			Main.endGame();
 		}

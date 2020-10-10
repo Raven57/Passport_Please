@@ -28,6 +28,12 @@ public class PlayerData {
 		}
 		return null;
 	}
+	public boolean emailExisted(String email) {
+		for (Player player : playerList) {
+			if(player.getEmail().equalsIgnoreCase(email))return true;
+		}
+		return false;
+	}
 	
 	public void addToList(Player p) {
 		playerList.add(p);

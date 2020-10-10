@@ -99,7 +99,7 @@ public class Airport implements Runnable{
 				System.out.println("WRONG CREDENTIAL!");
 				Util.sc.nextLine();
 				return false;
-			} else if (p.getMoney()<=0){
+			} else if (p.getMoney()<0){
 				System.out.println("YOU RAN OUT OF MONEY!\n PLEASE CREATE A NEW ACCOUNT");
 				Util.sc.nextLine();
 				return false;
@@ -169,6 +169,11 @@ public class Airport implements Runnable{
 		do {
 			System.out.print("Enter your email [must ends with @mail.com] : ");
 			email = Util.sc.nextLine();
+			if(Main.pd.emailExisted(email)) {
+				System.out.println("Email existed!");
+				email="";
+				Util.sc.nextLine();
+			}
 		} while (!email.endsWith("@mail.com"));
 		String pass = name+"123";
 		System.out.printf("Your password is %s123\n Press [Enter] to continue",name);
@@ -179,11 +184,15 @@ public class Airport implements Runnable{
 		return new Player(p, b, email, pass, 100, pt);
 	}
 	public void play() {
+		if(q!=null) {
+			Main.currPlayer.getActiveCharm().activate();
+		}
 		if(running.get()==false||worker==null) {
 			this.start();
 			isPlaying=true;
 		}
 	}
+	public static NoPenalty np;
 	@Override
 	public void run() {
 		running.set(true);
@@ -191,14 +200,18 @@ public class Airport implements Runnable{
 		int sumOfPpl=1;
         while (running.get()) {
 
+        	MoneyCharm mc =np;
+//        	if(q!=null&&day==p.getPt().getDay()) {        		
+//        		Main.currPlayer.getActiveCharm().activate();
+//        	}
         	if(q==null||day!=p.getPt().getDay()) {
         		Util.cheatMode=false;
         		if(q!=null) {
-        			MoneyCharm mc =Main.currPlayer.getActiveCharm().getMc();
-        			if(mc!=null) {        				
-        				if(!(Main.currPlayer.getActiveCharm().getMc()instanceof NoPenalty)) {
-        					penalty = q.getPersonList().size()*15;	
-        				}
+        			if(np!=null) {
+        				np.use();
+        				np = null;
+        			}else {
+        				penalty = q.getPersonList().size()*15;
         			}
         			p.deductMoney(penalty);
         		}
@@ -216,6 +229,7 @@ public class Airport implements Runnable{
 			p.checkMoney();
 			Util.cls();
 			p.printInformation();		
+			p.printActiveCharm();
 					Util.printPerson(q.getPersonList());
 		        	if(!isPlaying) {
 		        		System.out.println("Please press enter once again to exit");
