@@ -7,6 +7,7 @@ public class City extends Data{
 		super(list);
 	}
 	public boolean validCity(String string) {
+		if(string.isEmpty()) return false;
 		if(string.equalsIgnoreCase("Surabaya")) return true;
 		else if(string.equalsIgnoreCase("Jakarta")) return true;
 		else if(string.equalsIgnoreCase("Semarang")) return true;

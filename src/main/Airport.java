@@ -10,16 +10,19 @@ import item.Passport;
 import item.Person;
 import item.Player;
 import item.PlayerTime;
+import item.charm.money.MoneyCharm;
+import item.charm.money.NoPenalty;
 import utils.Util;
 
 public class Airport implements Runnable{
 	protected Thread worker;
     protected final AtomicBoolean running = new AtomicBoolean(false);
-    protected int interval=1000;
+    public static int interval=1000;
 	private Player p=null;
 	public static Biodata constraint;
 	public static Queue q;
-	private int money;
+	public static int money,deductedMoney,penalty;
+//	public static int deductedMoney;
 	protected boolean isPlaying;
 	public static Queue getQ() {
 		return q;
@@ -41,6 +44,7 @@ public class Airport implements Runnable{
 		char gender='X';
 		int age=0;
 		Date dob=null;
+		limit%=6;
 		switch (limit) {
 			case 6:
 				int ran = Util.randomInt(1, 10);
@@ -108,9 +112,8 @@ public class Airport implements Runnable{
 		}
 	}
 	void initializeQueue(int day) {
-		//create constraint
 		q = new Queue(1);
-		int numberOfPeople=20;
+		double numberOfPeople=20;
 		money = 100;
 		int temp = day;
 		while(temp>1) {			
@@ -138,6 +141,8 @@ public class Airport implements Runnable{
 			}
 			q.addRandomPerson(correct, wrongInfo);
 		}
+		deductedMoney = money*2;
+		Main.currPlayer.getActiveCharm().activate();
 		constraint = createConstraint(Util.randomInt(1, day+1));
 	}
 	private Player register() {
@@ -188,8 +193,15 @@ public class Airport implements Runnable{
         while (running.get()) {
 
         	if(q==null||day!=p.getPt().getDay()) {
-        		if(q!=null) {        			
-        			p.deductMoney(q.getPersonList().size()*15);
+        		Util.cheatMode=false;
+        		if(q!=null) {
+        			MoneyCharm mc =Main.currPlayer.getActiveCharm().getMc();
+        			if(mc!=null) {        				
+        				if(!(Main.currPlayer.getActiveCharm().getMc()instanceof NoPenalty)) {
+        					penalty = q.getPersonList().size()*15;	
+        				}
+        			}
+        			p.deductMoney(penalty);
         		}
         		day = p.getPt().getDay();
         		initializeQueue(day);
@@ -206,7 +218,6 @@ public class Airport implements Runnable{
 			Util.cls();
 			p.printInformation();		
 					Util.printPerson(q.getPersonList());
-					System.out.println("Sum : "+sumOfPpl);
 		        	if(!isPlaying) {
 		        		System.out.println("Please press enter once again to exit");
 		        	}
@@ -240,7 +251,7 @@ public class Airport implements Runnable{
 			this.p.addMoney(money);;
 		}
 		else {
-			this.p.deductMoney(money*2);
+			this.p.deductMoney(deductedMoney);
 		}
 		p.stop();
 		q.getPersonList().remove(p);

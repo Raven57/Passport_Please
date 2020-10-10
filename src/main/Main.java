@@ -16,6 +16,13 @@ import data.factory.NameFactory;
 import data.factory.PlayerDataFactory;
 import data.factory.ShopFactory;
 import item.Player;
+import item.charm.ActiveCharm;
+import item.charm.ActiveCharmBuilder;
+import item.charm.Charm;
+import item.charm.money.MoneyCharm;
+import item.charm.productivity.ProductivityCharm;
+import item.charm.time.TimeCharm;
+import item.charm.weird.WeirdCharm;
 import utils.SortByDay;
 import utils.SortByMoney;
 import utils.SortByName;
@@ -37,12 +44,12 @@ public class Main {
 	private void loadDataFromFile() {
 		try {
 			final String filename = "data.csv";
+			s = new ShopFactory().loadData("charm_data.csv", ";");
 			name = new NameFactory().loadData(filename, ";", 2);
 			city = new CityFactory().loadData(filename, ";", 1);
 			country = new CountryFactory().loadData(filename, ";", 0);
 			pd = new PlayerDataFactory().loadData("player_data.csv", ";");
 			//
-			s = new ShopFactory().loadData("charm_data.csv", ";");
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
@@ -60,6 +67,7 @@ public class Main {
 	
 	public static void printMainMenu() {
 		System.out.println();
+		currPlayer.describeLobby();
 		System.out.println("LOBBY");
 		System.out.println("=====");
 		System.out.println("1. Work");
@@ -127,7 +135,7 @@ public class Main {
 				shop=true;
 				break;
 			} else if(choice ==3) {
-				if(page+4>s.getSize()) {
+				if(page+4>s.getTemp().size()) {
 					System.out.println("This is last page");
 					Util.sc.nextLine();
 				}else {
@@ -141,21 +149,119 @@ public class Main {
 		if(!shop)
 			return;
 		else {
-			int start = page+1;
-			int end = page+4;
+			int start = 1;
 			do {
-				Util.cls();
-				s.showCharms(100, page);
-				System.out.print("CHOOSE YOUR POTION! [" + (start) + "-" + (end) + "]\n >> ");
-				choice = Util.scanInt(start, end);
-			} while (choice<start||choice>end);
-			s.getCharmList().get(--choice).buyCharm(currPlayer);
+				s.createTemp2(page);
+				int end = s.getTemp2().size();
+				do {
+					Util.cls();
+					s.chooseCharm();
+//					s.showCharms(currPlayer.getPt().getDay(), page);
+					System.out.print("CHOOSE YOUR POTION! [" + (start) + "-" + (end) + "]\nPress 5 to exit\n >> ");
+					
+					choice = Util.scanInt(start, 5);
+				} while (choice < start || choice > 5);
+				if (choice > end) {
+					if(choice==5) {
+						return;
+					}
+					System.out.println("Please choose available options");
+					Util.sc.nextLine();
+				}
+				else {
+					s.getTemp2().get(--choice).buyCharm(currPlayer);
+				} 
+			} while (choice!=5);
 		}
 		
 	}
 	void menu3() {
-		currPlayer.printCharm();
-		Util.sc.nextLine();
+		int choice = 0;
+		int page = 0;
+		boolean chosen=false;
+		do {
+			do {
+				Util.cls();
+				currPlayer.printCharm(page);
+				System.out.println(
+						"Press 1 to go to previous page\n"
+						+ "Press 2 to choose a charm from this page\n"
+						+ "Press 3 to go to next page\n"
+						+ "Press 5 to exit\n"
+						+ " >> ");
+				choice = Util.scanInt(1, 5);
+			} while (choice<1||choice>5);
+			if(choice==1) {
+				if((page-4)<0) {
+					System.out.println("This is first page");
+					Util.sc.nextLine();
+				} else {
+					page-=4;
+				}
+			} else if (choice==2) {
+				chosen=true;
+				break;
+			} else if(choice ==3) {
+				if(page+4>currPlayer.getTemp().size()) {
+					System.out.println("This is last page");
+					Util.sc.nextLine();
+				}else {
+					page+=4;
+				}
+			} else if(choice==4) {
+				System.out.println("INPUT CORRECT COMMAND!");
+				Util.sc.nextLine();
+			}
+		} while (choice!=5);
+		if(!chosen)
+			return;
+		else {
+			int start = 1;
+			do {
+				currPlayer.createTemp2();
+				int end = currPlayer.getTemp2().size();
+				do {
+					Util.cls();
+					currPlayer.chooseCharm();
+					System.out.print("CHOOSE YOUR POTION! [" + (start) + "-" + (end) + "]\nPress 5 to exit\n >> ");
+					choice = Util.scanInt(start, 5);
+				} while (choice < start || choice > 5);
+				if (choice > end) {
+					if(choice==5) {
+						return;
+					}
+					System.out.println("Please choose available options");
+					Util.sc.nextLine();
+				}
+				else {
+					Charm c = currPlayer.getCharm(--choice);
+					ActiveCharm ac = currPlayer.getActiveCharm();
+					
+					do {
+						c.describe();
+						System.out.print("1.Activate\n" + "2.Sell\n" + "3. Back" + "\n >> ");
+						choice = Util.scanInt(1, 3);
+					} while (choice < 1 || choice > 3);
+					if (choice == 1 || choice == 2) {
+						int qty = 0;
+						do {
+							System.out.printf("Input qty [1-%d] : ", c.getQty());
+							qty = Util.scanInt(1, c.getQty());
+						} while (qty < 1 || qty > c.getQty());
+						if (choice == 1) {
+//							ActiveCharmBuilder acb = new ActiveCharmBuilder();
+//							currPlayer.setActiveCharm(acb.buildMc(mc).buildPc(pc).buildTc(tc).buildWc(wc).Build());;
+							if(c instanceof MoneyCharm) ac.setMc(c,qty);
+							else if (c instanceof WeirdCharm) ac.setWc(c,qty);
+							else if (c instanceof ProductivityCharm) ac.setPc(c,qty);
+							else if (c instanceof TimeCharm) ac.setTc(c,qty);
+						} else {
+							currPlayer.sellCharm(c, qty);
+						}
+					}
+				}
+			} while (choice!=5);
+		}
 	}
 	public Main() {
 		a = new Airport();

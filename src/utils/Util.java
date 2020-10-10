@@ -13,6 +13,17 @@ import java.util.concurrent.TimeUnit;
 
 import item.PlayerTime;
 import item.charm.Charm;
+import item.charm.money.BookOfTolerance;
+import item.charm.money.FourLeafClover;
+import item.charm.money.NoPenalty;
+import item.charm.productivity.BePatience;
+import item.charm.productivity.Cheat;
+import item.charm.productivity.LessPatience;
+import item.charm.time.HappyHour;
+import item.charm.time.TimeStone;
+import item.charm.weird.DayDreaming;
+import item.charm.weird.FanaticFan;
+import item.charm.weird.LovePotion;
 import item.Biodata;
 import item.Person;
 import item.Player;
@@ -23,11 +34,16 @@ public class Util {
 	private static Random rand = new Random();
 	public static Scanner sc = new Scanner(System.in);
 	public static SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyy");
+	public static boolean cheatMode=false;
 	public static void cls() {
 		for (int i = 0; i < 100; i++) {
 			System.out.println();
 		}
 	}
+//	public static Charm cloneCharm(Charm c) {
+//		Charm x = c;
+//		return x;
+//	}
 	public static void printPerson(ArrayList<Person> personList) {
 		int num = 5;
 		while(personList.size()<num) {
@@ -53,11 +69,14 @@ public class Util {
 			Airport.constraint.describe();
 		}
 		System.out.printf("|------------------------------------------------------------------------------------------------------------------------------------|\n");
-		System.out.printf("| Correct        |");
-		for (int i = 0; i < num; i++) {
-			System.out.printf("| %-20b ",personList.get(i).isCorrect());
+		
+		if(cheatMode) {
+			System.out.printf("| Correct        |");
+			for (int i = 0; i < num; i++) {
+				System.out.printf("| %-20b ",personList.get(i).isCorrect());
+			}
+			System.out.println("|");
 		}
-		System.out.println("|");
 		System.out.printf("| Patience       |");
 		for (int i = 0; i < num; i++) {
 			System.out.printf("| %-20d ",personList.get(i).getPatience());
@@ -197,10 +216,8 @@ public class Util {
 		Biodata b = p.getBiodata();
 		PlayerTime pt = p.getPt();
 		String charmList = "";
-		if(p.getCharmList()!=null) {			
-			System.out.println("asdasdadsa");
+		if(p.getCharmList()!=null) {
 			for (Charm c : p.getCharmList()) {
-				System.out.println(c.getName());
 				charmList = charmList.concat(";").concat(c.getName()).concat(";").concat(Integer.toString(c.getQty()));
 			}
 		}
@@ -324,5 +341,90 @@ public class Util {
 			return true;
 		
 		}
+	}
+	public static Charm cloneAndDeduct(Charm x, int qty) {
+		String name = x.getName();
+		x.deductQty(qty);
+		if(x.getQty()==0)
+			Main.currPlayer.getCharmList().remove(x);
+		Charm c=null;
+		switch (name) {
+		case "Love Potion":
+			c = new LovePotion(name,qty);
+			break;
+		case "Fanatic Fan":
+			c = new FanaticFan(name,qty);
+			break;
+		case "Day Dreaming":
+			c = new DayDreaming(name,qty);
+			break;
+		case "Be patience":
+			c = new BePatience(name,qty);
+			break;
+		case "Less patience":
+			c = new LessPatience(name,qty);
+			break;
+		case "Cheat":
+			c = new Cheat(name,qty);
+			break;
+		case "Four leaf clover":
+			c = new FourLeafClover(name,qty);
+			break;
+		case "Book of tolerance":
+			c = new BookOfTolerance(name,qty);
+			break;
+		case "No penalty":
+			c = new NoPenalty(name,qty);
+			break;
+		case "Time stone":
+			c = new TimeStone(name,qty);
+			break;
+		case "Happy hour":
+			c = new HappyHour(name,qty);
+			break;
+		}
+		return c;
+	}
+	public static Charm clonecharm(Charm x) {
+		String name = x.getName();
+		int qty = x.getQty();
+//		x.setQty(0);
+		Charm c=null;
+		switch (name) {
+		case "Love Potion":
+			c = new LovePotion(name,qty);
+			break;
+		case "Fanatic Fan":
+			c = new FanaticFan(name,qty);
+			break;
+		case "Day Dreaming":
+			c = new DayDreaming(name,qty);
+			break;
+		case "Be patience":
+			c = new BePatience(name,qty);
+			break;
+		case "Less patience":
+			c = new LessPatience(name,qty);
+			break;
+		case "Cheat":
+			c = new Cheat(name,qty);
+			break;
+		case "Four leaf clover":
+			c = new FourLeafClover(name,qty);
+			break;
+		case "Book of tolerance":
+			c = new BookOfTolerance(name,qty);
+			break;
+		case "No penalty":
+			c = new NoPenalty(name,qty);
+			break;
+		case "Time stone":
+			c = new TimeStone(name,qty);
+			break;
+		case "Happy hour":
+			c = new HappyHour(name,qty);
+			break;
+		}
+		return c;
 	}
 }

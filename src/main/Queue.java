@@ -150,13 +150,6 @@ public class Queue {
 		}
 		return true;
 	}
-	private void Register(String name, char gender, int age, String dob, String placeOfBirth, String email, String password) {
-		
-//		Passport p = new Passport(name, gender, age, dob, "Jakarta", "Indonesia", placeOfBirth, expired);
-//		Biodata b = new Biodata(name, gender, age, dob, "Jakarta", "Indonesia", placeOfBirth);
-//		Person pers = new Person(passport, biodata, email, password, patience);
-//		personList.add(pers);
-	}
 	public void describe() {
 		for (Person person : personList) {
 			person.describe();
