@@ -17,7 +17,7 @@ import utils.Util;
 public class Airport implements Runnable{
 	protected Thread worker;
     protected final AtomicBoolean running = new AtomicBoolean(false);
-    public static int interval=1000;
+    public static int interval=100;
 	private Player p=null;
 	public static Biodata constraint;
 	public static Queue q;
